@@ -19,11 +19,10 @@ export class AuthController {
 
     async register(req: Request, res: Response) {
         try {
-            const { username, email, password } = req.body;
             const data = await this.authService.register(
-                username,
-                email,
-                password
+                req.body.username,
+                req.body.email,
+                req.body.password
             );
             res.status(201).json(data);
         } catch (error) {
