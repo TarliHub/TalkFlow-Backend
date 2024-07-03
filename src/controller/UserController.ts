@@ -27,15 +27,6 @@ export class UserController {
         }
     }
 
-    async createUser(req: Request, res: Response) {
-        try {
-            const user = await this.userService.createUser(req.body);
-            res.status(201).json(user);
-        } catch (error) {
-            res.status(500).json({ message: "Error creating user", error });
-        }
-    }
-
     async deleteUser(req: Request, res: Response) {
         try {
             const id = parseInt(req.params.id);

@@ -12,11 +12,6 @@ export class UserService {
         return await this.userRepository.findOne({ where: { id } });
     }
 
-    async createUser(userData: Partial<User>): Promise<User> {
-        const user = this.userRepository.create(userData);
-        return await this.userRepository.save(user);
-    }
-
     async deleteUser(id: number): Promise<void> {
         const userToRemove = await this.userRepository.findOne({
             where: { id },
