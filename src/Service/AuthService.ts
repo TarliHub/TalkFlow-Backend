@@ -23,24 +23,45 @@ export class AuthService {
     async login(
         email: string,
         password: string
-    ): Promise<{ role: string; token: string } | null> {
-        const user = await this.userRepository.findOne({ where: { email } });
-        if (user && (await bcrypt.compare(password, user.password))) {
+    ): Promise<{ role: number; token: string }> {
+        try {
+            const user = await this.userRepository.findOne({
+                where: { email },
+            });
+            if (!user) {
+                throw new Error("User not found");
+            }
+            if (!(await bcrypt.compare(password, user.password))) {
+                throw new Error("Invalid password");
+            }
             const token = this.generateToken(user);
             return { role: user.role, token };
+        } catch (error) {
+            console.error("Error during login: ", error);
+            throw error;
         }
-        return null;
     }
 
     async register(
         username: string,
         email: string,
         password: string
-    ): Promise<{ role: string; token: string }> {
-        const hashedPassword = await bcrypt.hash(password, 10);
-        const user = new User(username, "User", email, hashedPassword);
-        const savedUser = await this.userRepository.save(user);
-        const token = this.generateToken(savedUser);
-        return { role: savedUser.role, token };
+    ): Promise<{ role: number; token: string }> {
+        try {
+            const existingUser = await this.userRepository.findOne({
+                where: { email },
+            });
+            if (existingUser) {
+                throw new Error("User already exists");
+            }
+            const hashedPassword = await bcrypt.hash(password, 10);
+            const user = new User(username, 0, email, hashedPassword);
+            const savedUser = await this.userRepository.save(user);
+            const token = this.generateToken(savedUser);
+            return { role: savedUser.role, token };
+        } catch (error) {
+            console.error("Error during registration: ", error);
+            throw error;
+        }
     }
 }

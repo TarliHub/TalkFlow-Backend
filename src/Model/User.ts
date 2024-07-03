@@ -4,7 +4,7 @@ import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
 export class User {
     constructor(
         username: string,
-        role: "User" | "Admin",
+        role: 0 | 1,
         email: string,
         password: string
     ) {
@@ -21,7 +21,7 @@ export class User {
     username: string;
 
     @Column()
-    role: "User" | "Admin";
+    role: 0 | 1;
 
     @Column()
     email: string;
