@@ -1,11 +1,12 @@
 import express from "express";
 import * as bodyParser from "body-parser";
 import cors from "cors";
-import { AppDataSource } from "./data-source";
-import * as dotenv from "dotenv";
-import userRoutes from "./Routes/UserRoute";
 import { setupSwagger } from "./swagger";
-dotenv.config();
+
+import { AppDataSource } from "./data-source";
+
+import userRoutes from "./Routes/UserRoute";
+import authRoutes from "./Routes/AuthRoute";
 
 AppDataSource.initialize()
     .then(async () => {
@@ -13,7 +14,8 @@ AppDataSource.initialize()
         app.use(bodyParser.json());
         app.use(cors());
 
-        app.use("/api/users", userRoutes);
+        app.use("/api", userRoutes);
+        app.use("/api", authRoutes);
 
         setupSwagger(app);
         console.log("Swagger api-docs: http://localhost:3000/api-docs");

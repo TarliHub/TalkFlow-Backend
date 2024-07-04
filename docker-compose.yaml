@@ -25,6 +25,7 @@ services:
       TYPEORM_DATABASE: mydb
       TYPEORM_SYNCHRONIZE: "true"
       TYPEORM_LOGGING: "false"
+      JWT_SECRET: f54756970d841414533c9479bbf105d56ba6f4767d11e4c715a84a315d6319fa
     ports:
       - "3000:3000"
     volumes:

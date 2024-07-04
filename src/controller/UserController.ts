@@ -1,10 +1,11 @@
-import { Request, Response } from "express";
+import { Response } from "express";
 import { UserService } from "../Service/UserService";
+import { IAuthenticatedRequest } from "../Types/AuthenticatedRequest";
 
 export class UserController {
     private userService = new UserService();
 
-    async getAllUsers(req: Request, res: Response) {
+    async getAllUsers(req: IAuthenticatedRequest, res: Response) {
         try {
             const users = await this.userService.getAllUsers();
             res.status(200).json(users);
@@ -13,7 +14,7 @@ export class UserController {
         }
     }
 
-    async getUserById(req: Request, res: Response) {
+    async getUserById(req: IAuthenticatedRequest, res: Response) {
         try {
             const id = parseInt(req.params.id);
             const user = await this.userService.getUserById(id);
@@ -27,16 +28,7 @@ export class UserController {
         }
     }
 
-    async createUser(req: Request, res: Response) {
-        try {
-            const user = await this.userService.createUser(req.body);
-            res.status(201).json(user);
-        } catch (error) {
-            res.status(500).json({ message: "Error creating user", error });
-        }
-    }
-
-    async deleteUser(req: Request, res: Response) {
+    async deleteUser(req: IAuthenticatedRequest, res: Response) {
         try {
             const id = parseInt(req.params.id);
             await this.userService.deleteUser(id);
