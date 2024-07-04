@@ -4,6 +4,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import { UserRole } from "../Types/UserRole";
+import { NotFoundError, UnauthorizedError, ConflictError } from "../Errors/CustomErrors";
 
 dotenv.config();
 
@@ -31,10 +32,10 @@ export class AuthService {
                 where: { email },
             });
             if (!user) {
-                throw new Error("User not found");
+                throw new NotFoundError("User not found");
             }
             if (!(await bcrypt.compare(password, user.password))) {
-                throw new Error("Invalid password");
+                throw new UnauthorizedError("Invalid password");
             }
             const token = this.generateToken(user);
             return { role: user.role, token };
@@ -54,7 +55,7 @@ export class AuthService {
                 where: { email },
             });
             if (existingUser) {
-                throw new Error("User already exists");
+                throw new ConflictError("User already exists");
             }
             const hashedPassword = await bcrypt.hash(password, 10);
             const user = new User(username, UserRole.User, email, hashedPassword);
@@ -77,7 +78,7 @@ export class AuthService {
                 where: { email },
             });
             if (existingUser) {
-                throw new Error("User already exists");
+                throw new ConflictError("User already exists");
             }
             const hashedPassword = await bcrypt.hash(password, 10);
             const user = new User(username, UserRole.Admin, email, hashedPassword);
