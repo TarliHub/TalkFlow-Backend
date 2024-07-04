@@ -7,10 +7,7 @@ export class AuthController {
 
     async login(req: Request, res: Response) {
         try {
-            const data = await this.authService.login(
-                req.body.email,
-                req.body.password
-            );
+            const data = await this.authService.login(req.body.email, req.body.password);
             res.status(200).json(data);
         } catch (error) {
             ErrorHandler.handleError(error, res);
@@ -19,11 +16,16 @@ export class AuthController {
 
     async register(req: Request, res: Response) {
         try {
-            const data = await this.authService.register(
-                req.body.username,
-                req.body.email,
-                req.body.password
-            );
+            const data = await this.authService.register(req.body.username, req.body.email, req.body.password);
+            res.status(201).json(data);
+        } catch (error) {
+            ErrorHandler.handleError(error, res);
+        }
+    }
+
+    async registerAdmin(req: Request, res: Response) {
+        try {
+            const data = await this.authService.registerAdmin(req.body.username, req.body.email, req.body.password);
             res.status(201).json(data);
         } catch (error) {
             ErrorHandler.handleError(error, res);
