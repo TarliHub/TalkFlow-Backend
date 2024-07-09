@@ -7,6 +7,7 @@ import { AppDataSource } from "./data-source";
 
 import userRoutes from "./Routes/UserRoute";
 import authRoutes from "./Routes/AuthRoute";
+import chatRoutes from "./Routes/ChatRoutes";
 
 AppDataSource.initialize()
     .then(async () => {
@@ -14,7 +15,8 @@ AppDataSource.initialize()
         app.use(bodyParser.json());
         app.use(cors());
 
-        app.use("/api", userRoutes);
+        app.use("/api/admin", userRoutes);
+        app.use("/api", chatRoutes);
         app.use("/api", authRoutes);
 
         setupSwagger(app);

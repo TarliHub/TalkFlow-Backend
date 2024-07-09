@@ -1,5 +1,8 @@
 import { DataSource } from "typeorm";
 import { User } from "./Model/User";
+import { UserChat } from "./Model/UserChat";
+import { Message } from "./Model/Message";
+import { Chat } from "./Model/Chat";
 
 export const AppDataSource = new DataSource({
     type: "postgres",
@@ -10,6 +13,6 @@ export const AppDataSource = new DataSource({
     database: process.env.TYPEORM_DATABASE || "postgres",
     synchronize: true,
     logging: process.env.TYPEORM_LOGGING === "true",
-    entities: [User],
+    entities: [User, Chat, UserChat, Message],
     migrations: ["src/migration/**/*.ts"],
 });

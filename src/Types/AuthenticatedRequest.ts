@@ -2,7 +2,8 @@ import { Request } from "express";
 import { UserRole } from "./UserRole";
 
 export interface IJwtPayload {
-    userId: number;
+    id: number;
+    username: string;
     role: UserRole;
 }
 
