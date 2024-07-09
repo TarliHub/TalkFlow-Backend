@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
+import { UserChat } from "./UserChat";
 import { UserRole } from "../Types/UserRole";
 
 @Entity()
@@ -17,6 +18,9 @@ export class User {
 
     @Column({ type: "enum", enum: UserRole, default: UserRole.User })
     role!: UserRole;
+
+    @OneToMany(() => UserChat, userChat => userChat.user)
+    userChats!: UserChat[];
 
     constructor(username: string, role: UserRole, email: string, password: string) {
         this.username = username;
